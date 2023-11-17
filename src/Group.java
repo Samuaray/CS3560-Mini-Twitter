@@ -5,34 +5,46 @@ public class Group extends NewEnt  {
     private String name;
     private static int count;
 
-    public Group(String name){
+    public Group(String name)
+    {
     this.name = name;
     list = new ArrayList<NewEnt>();
     count++;
     }
-    public void add(NewEnt user){
+
+    public void add(NewEnt user)
+    {
         //Adds any NewEnt
         if(!list.contains(user)){
           list.add(user);
         }
     }
-    public static int getCount(){
-        //getter method
+
+    public static int getCount()
+    {
+        //getter method number of groups
         return count;
     }
-    public String getDisplayName(){
+    public String getDisplayName()
+    {
         //Getter method for name
         return name;
     }
-    public int accept(Visitor visitor){
+
+    public int accept(Visitor visitor)
+    {
         //Visitor Pattern
         return visitor.visit(this);
     }
-    public boolean isGroup(){
+
+    public boolean isGroup()
+    {
         //Checks if Group or not
         return true;
     }
-    public boolean isUser(){
+
+    public boolean isUser()
+    {
         //Returns if User or not
         return false;
     }

@@ -1,4 +1,4 @@
-// Observer interface
 public interface Observer {
-    void update(Observable o, Object arg);
+    public void updateFollower(Observer follow);
+    public void receive(String str);
 }

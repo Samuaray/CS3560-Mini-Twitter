@@ -1,5 +1,4 @@
-public interface Observable {
-    void addObserver(Observer o);
-    void removeObserver(Observer o);
-    void notifyObservers();
+public interface Observable extends Observer{
+    public void follow(Observer follower);
+    public void receive(String str);
 }

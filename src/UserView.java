@@ -21,52 +21,92 @@ public class UserView extends javax.swing.JFrame {
         // Instantiate list models
         followingListModel = new DefaultListModel<>();
         newsFeedListModel = new DefaultListModel<>();
-    
-        // Initialize components
+        this.user = user;
+        treeView = Window.getInstance().getTree();
+
+        // Initialize components;
         initComponents();
     
         // Now set the models for the JLists
         jList1.setModel(followingListModel);
         jList2.setModel(newsFeedListModel);
-    
         // Attach event listeners to buttons
-        jButton1.addActionListener(new ActionListener() {
+        jButton1.addActionListener(new ActionListener() 
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                postTweet();
+            public void actionPerformed(ActionEvent e) 
+            {
+                postTweet(user);
             }
         });
     
-        jButton2.addActionListener(new ActionListener() {
+        jButton2.addActionListener(new ActionListener() 
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
                 followUser();
             }
         });
     }
-    private void postTweet() {
-        String tweet = jTextArea2.getText();
-        newsFeedListModel.addElement(tweet);
-        jTextArea2.setText(""); // Clear the text area after posting
+    
+   
+    private void postTweet(User user)
+     { //handles the UI part of the posting process
+        if(!jTextArea2.getText().isEmpty())
+        {
+            String tweet = user.getUserID() + " posted: " + jTextArea2.getText();
+            newsFeedListModel.addElement(tweet);
+            jList2.setModel(newsFeedListModel);
+            user.post(tweet); //calls user post method
+            jTextArea2.setText("");
+        }
     }
 
-    // Method to handle following a new user
-    private void followUser() {
-    String userID = jTextArea1.getText().trim(); // Trim to remove leading/trailing whitespace
+    private void followUser() //Test version, to help find issue with original follow user 
+    {
+        String userID = jTextArea1.getText().trim(); // Get the user ID from the text area
+        User userToFollow = treeView.findUser(userID); // Assuming treeView can find a User by ID
+    
+        if (userToFollow != null) 
+        {
+            user.follow(userToFollow); // 'user' is the current User object of this UserView
+        }
+         else 
+        {
+            JOptionPane.showMessageDialog(this, "User not found: " + userID);
+        }
+    }
+    
+///////////////////////////////////////////////////////////////////////////////////////////// Under constrution
+    // Method to handle following a new user, Redoing th
+/*private void followUser() {
+         //Will follow the user and use the Observer Method
+
+    String userID = jTextArea1.getText(); //.trim(); //Trim to remove any whitespace
     if (!userID.isEmpty() && !followingListModel.contains(userID)) {
         followingListModel.addElement(userID);
-        // Optionally, you can clear the text area only if the user is successfully added
+        jList1.setModel(followingListModel);
         jTextArea1.setText(""); // Clear the text area after adding
-    }
+        System.out.println("It adds the user to the following list");
+
+        user.follow((Observer)treeView.findUser(userID));    //Issue is also here it looks like its null
+    }// THE ISSUE IS HERE!!!!!!!
+}
+*/
+/////////////////////////////////////////////////////////////////////////////////////////
+    public void receive(String str) 
+    {
+        SwingUtilities.invokeLater(() -> {
+        newsFeedListModel.addElement(str);
+        jList2.setModel(newsFeedListModel);
+        System.out.println("its working");
+    });
 }
 
 
-    public void receive(String str) {
-        // Ensure the GUI update is done on the Event Dispatch Thread
-        newsFeedListModel.addElement(str);
-        System.out.println("Its working");
-    }
-    
+
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -89,7 +129,7 @@ public class UserView extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jList2 = new javax.swing.JList<>();
 
-        //setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+      
 
         jSplitPane1.setDividerLocation(150);
 
@@ -179,7 +219,7 @@ public class UserView extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextArea jTextArea2;
-
+    private TreeView treeView;
     private DefaultListModel<String> followingListModel;
     private DefaultListModel<String> newsFeedListModel;
     // End of variables declaration//GEN-END:variables

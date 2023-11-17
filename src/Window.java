@@ -9,6 +9,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 /**
  *
  * @author saray
@@ -18,47 +19,115 @@ public class Window extends javax.swing.JFrame {
     /**
      * Creates new form Window
      */
-    public Window() {
-        
-          treeView = new TreeView();
+    public Window() 
+    {
+          treeView = new TreeView(); //Set the jTree
           initComponents();
-       // DefaultMutableTreeNode root = new DefaultMutableTreeNode("Root");
-
-
+      
          // Set the action for the "Add User" button
-         jButton3.addActionListener(new ActionListener() {
+         jButton3.addActionListener(new ActionListener()
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) 
+            {
                 String userName = jTextArea1.getText().trim();
-                if (!userName.equals("")) {
-                    NewEnt user = new User("User: " + userName);
+                if (!userName.equals("")) 
+                {
+                    NewEnt user = new User(userName);
                     treeView.addNewEnt(user);
                 } 
             }
         });
+
+        
         // Set the action for the "Add Group" button
-        jButton4.addActionListener(new ActionListener() {
+        jButton4.addActionListener(new ActionListener() 
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(jTextArea2.getText()!= null &&!jTextArea2.getText().trim().equals("")){
+            public void actionPerformed(ActionEvent e) 
+            {
+                if(jTextArea2.getText()!= null &&!jTextArea2.getText().trim().equals(""))
+                {
                     NewEnt group = new Group("Group - " + jTextArea2.getText());
                     treeView.addNewEnt(group);
-                    }
+                }
             }
         });
 
 
-        jButton5.addActionListener(new ActionListener() {
+        jButton5.addActionListener(new ActionListener() 
+        {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e)
+            {
                 treeView.openUser(); // Call the openUser method of treeView
             }
         });
 
         
-    }
+         // Set the action for the "Show Group Total" button (button1)
+    jButton1.addActionListener(new ActionListener() 
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            int groupCount = treeView.getTotalGroups(); // Implement this method in your TreeView class
+            JOptionPane.showMessageDialog(null, "Total Number of Groups: " + groupCount, "Group Total", JOptionPane.INFORMATION_MESSAGE);
+        }
+    });
+
+
+    //Set the actoion for the Show Positive % Button
+    jButton6.addActionListener(new ActionListener() 
+    {
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            // Calculate the good tweets percentage
+            double percentage = User.getGoodTweetsPercentage();
+    
+            // Display the percentage in a dialog
+            JOptionPane.showMessageDialog(Window.this,"Good Tweets Percentage: " + percentage + "%","Good Tweets Percentage",JOptionPane.INFORMATION_MESSAGE);
+        }
+    });
 
     
+    // Set the action for the "Show User Total" button (button7)
+    jButton7.addActionListener(new ActionListener() 
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            int userCount = treeView.getTotalUsers(); // Implement this method in your TreeView class
+            JOptionPane.showMessageDialog(null, "Total Number of Users: " + userCount, "User Total", JOptionPane.INFORMATION_MESSAGE);
+        }
+    });
+
+
+      jButton2.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) 
+        {
+            totalTweets =  User.getTweets(); //fix this, it adds the tweets when the button is clicked
+            JOptionPane.showMessageDialog(null, "Total Number of Tweets: " + totalTweets, "Total Tweets", JOptionPane.INFORMATION_MESSAGE);
+        }
+    });
+    }
+
+        
+   public TreeView getTree()
+    {
+        return treeView;
+    }
+
+    //Singleton pattern used to get isntance of Window
+    public static Window getInstance() 
+    {
+        if (instance == null) {
+            instance = new Window();
+        }
+        return instance;
+    }
 
     
 
@@ -69,8 +138,8 @@ public class Window extends javax.swing.JFrame {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
+    private void initComponents() 
+    {
         jScrollPane1 = new javax.swing.JScrollPane();
         panel1 = new java.awt.Panel();
         jButton3 = new javax.swing.JButton();
@@ -87,8 +156,6 @@ public class Window extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         jTree2 = new javax.swing.JTree();
         
-       
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButton3.setText("Add User");
@@ -208,16 +275,6 @@ public class Window extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
-
-    public TreeView getTree(){
-        return treeView;
-    }
-
-    public static Window getInstance(){
-        return window;
-    }
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -283,5 +340,8 @@ public class Window extends javax.swing.JFrame {
     private java.awt.Panel panel1;
     private TreeView treeView;
     private static Window window = new Window();
+    private ArrayList<User> userList = new ArrayList<>();
+    int totalTweets = 0;
+    private static Window instance;
     // End of variables declaration//GEN-END:variables
 }
