@@ -9,8 +9,8 @@ public class User extends NewEnt implements Observer, Observable, Visitable
     private static int tweets;
     private static int goodTweets;
     private UserView userView;
-
-
+    private long time; //Assignment 3
+    private long updateTime; //Assignment 3
     public User(String userID)
     {
             this.userID = userID;
@@ -20,6 +20,7 @@ public class User extends NewEnt implements Observer, Observable, Visitable
             following = new ArrayList<>();
             //tweets = 0;
             goodTweets = 0;
+            time = System.currentTimeMillis(); //Assignment 3
     }
 
     public void setUserView(UserView userView) {
@@ -46,6 +47,7 @@ public class User extends NewEnt implements Observer, Observable, Visitable
          {
             System.err.println("user receive is working");
             userView.receive(str);
+            updateTime = System.currentTimeMillis(); // Updates the user's update time to the new post creation in their feed
         }
     }
 
@@ -123,10 +125,19 @@ public void follow(Observer follow) {
             goodTweets++;
         }
          tweets++;
+        updateTime = System.currentTimeMillis(); //Assignment 3
+        System.out.println(userID + " Posted new Tweet: "+ updateTime); // Assignment 3
     }
 
- 
+    public long getTime() // Assignment 3
+    { 
+        return time;
+    }
 
+    public long getupdateTime() // Assignment 3
+    { 
+        return updateTime;
+    }
     //implementation of visitor
     public int accept(Visitor visitor){
         return visitor.visit(this);

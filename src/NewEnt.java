@@ -14,5 +14,14 @@ public class NewEnt {
         return false;
     }  
     
+    public long getTime()
+    {
+        return 0;
+    }
+
+    public long getupdateTime()
+    {
+        return 0;
+    }
 }
 

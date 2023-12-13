@@ -4,12 +4,14 @@ public class Group extends NewEnt  {
     private static int group;
     private String name;
     private static int count;
-
+    private long time; //Assignment 3
     public Group(String name)
     {
     this.name = name;
     list = new ArrayList<NewEnt>();
     count++;
+    time = System.currentTimeMillis(); // Assignment 3
+    System.out.println(name + " created - " + time);
     }
 
     public void add(NewEnt user)

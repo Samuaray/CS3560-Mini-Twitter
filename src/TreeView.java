@@ -16,7 +16,7 @@ public class TreeView {
     private JTree tree;
     private DefaultMutableTreeNode nd;
     private DefaultMutableTreeNode root;
-    
+    private boolean valid;// Assignment 3
 
     
     public TreeView(){
@@ -28,7 +28,7 @@ public class TreeView {
         root = new DefaultMutableTreeNode("Root");
         tree = new JTree(root); 
         tree.setBounds(0,0,500,500);
-     
+        valid = true; //Assignment 3
        
         //add mouse click listner 
         tree.addMouseListener(new MouseAdapter()
@@ -125,7 +125,7 @@ public class TreeView {
             // If no UserView exists for this user, or it's closed, create a new one
             UserView userView = new UserView(user);
             userViews.put(temp, userView); // Store the UserView in the map
-            userView.setTitle(user.getDisplayName());
+            userView.setTitle("User " + user.getDisplayName() + "  |  " + "Time Created:" + user.getTime());
             userView.setVisible(true);
         } 
         else
@@ -141,7 +141,7 @@ public class TreeView {
    
    //Count number of Users
    public int getTotalUsers()
-   {
+    {
     NewEntVistor visit = new NewEntVistor();
     int total = 0;
     for(int i =0; i<usersID.size(); i++)
@@ -167,5 +167,33 @@ public class TreeView {
 
    }
    
+//Assignment 3
+public boolean getValid(){
+    for(int i =0; i<usersID.size(); i++){
+        if(usersID.get(i).contains(" ")){
+            return false;
+        }
+    }
+    for(int i =0; i<groupsID.size(); i++){
+        if(groupsID.get(i).contains(" ")){
+            return false;
+        }
+    }
+    return valid;
+   }
+
+   //Assignment 3
+   public String lastUpdatedUser()
+   {
+    String Latest = usersID.get(0);
+    for(int i =1; i<usersID.size(); i++){
+        if(users.get(Latest).getupdateTime() < users.get(usersID.get(i)).getTime()){
+            Latest = users.get(usersID.get(i)).getDisplayName();
+        }
+    }
+    return Latest;
+   }
+
+
 }
 

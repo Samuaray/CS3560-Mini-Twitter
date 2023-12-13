@@ -100,6 +100,7 @@ public class UserView extends javax.swing.JFrame {
         SwingUtilities.invokeLater(() -> {
         newsFeedListModel.addElement(str);
         jList2.setModel(newsFeedListModel);
+        System.out.println(user.getDisplayName()+ " User Interface | Time Created: "+user.getTime());
         System.out.println("its working");
     });
 }
